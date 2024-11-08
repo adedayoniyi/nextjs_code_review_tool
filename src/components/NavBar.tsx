@@ -1,5 +1,4 @@
-// components/Navbar.tsx
-"use client"
+"use client";
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -11,35 +10,37 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <nav className="bg-gray-900 shadow-md fixed w-full z-20 py-4">
+        <nav className="bg-gradient-to-b from-gray-900 to-black shadow-md fixed w-full z-20 py-4">
             <div className="container mx-auto px-4 flex justify-between items-center">
-                <Link href="/" className="text-2xl font-bold text-blue-400 hover:text-blue-500 transition-colors duration-300">
+                <Link href="/" className="text-2xl font-bold text-gray-100 hover:text-gray-300 transition-colors duration-300">
                     CodeReviewTool
                 </Link>
+
                 {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-6">
-                    <Link href="#features" className="text-gray-200 hover:text-blue-400 transition-colors duration-300">
+                    <Link href="#features" className="text-gray-200 hover:text-gray-400 transition-colors duration-300">
                         Features
                     </Link>
-                    <Link href="#how-to-use" className="text-gray-200 hover:text-blue-400 transition-colors duration-300">
+                    <Link href="#how-to-use" className="text-gray-200 hover:text-gray-400 transition-colors duration-300">
                         How to Use
                     </Link>
-                    <Link href="/login" className="text-gray-200 hover:text-blue-400 transition-colors duration-300">
+                    <Link href="/login" className="text-gray-200 hover:text-gray-400 transition-colors duration-300">
                         Login
                     </Link>
                     <Link
                         href="/signup"
-                        className="bg-blue-500 text-gray-900 px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                        className="bg-gradient-to-r from-purple-600 to-indigo-500 text-white px-4 py-2 rounded-full hover:from-purple-700 hover:to-indigo-600 transition duration-300"
                     >
                         Sign Up
                     </Link>
                 </div>
+
                 {/* Mobile Menu Button */}
                 <div className="md:hidden">
                     <button
                         onClick={toggleMenu}
                         type="button"
-                        className="text-gray-200 hover:text-blue-400 focus:outline-none focus:text-blue-400 transition-colors duration-300"
+                        className="text-gray-200 hover:text-gray-400 focus:outline-none transition-colors duration-300"
                         aria-label="Toggle menu"
                     >
                         {isOpen ? (
@@ -68,21 +69,22 @@ const Navbar: React.FC = () => {
                     </button>
                 </div>
             </div>
+
             {/* Mobile Menu */}
             {isOpen && (
-                <div className="md:hidden bg-gray-800 py-4">
-                    <Link href="#features" className="block px-4 py-2 text-gray-200 hover:text-blue-400 transition-colors duration-300">
+                <div className="md:hidden bg-gray-800 py-4 rounded-b-lg shadow-lg">
+                    <Link href="#features" className="block px-4 py-2 text-gray-200 hover:text-gray-400 transition-colors duration-300">
                         Features
                     </Link>
-                    <Link href="#how-to-use" className="block px-4 py-2 text-gray-200 hover:text-blue-400 transition-colors duration-300">
+                    <Link href="#how-to-use" className="block px-4 py-2 text-gray-200 hover:text-gray-400 transition-colors duration-300">
                         How to Use
                     </Link>
-                    <Link href="/login" className="block px-4 py-2 text-gray-200 hover:text-blue-400 transition-colors duration-300">
+                    <Link href="/login" className="block px-4 py-2 text-gray-200 hover:text-gray-400 transition-colors duration-300">
                         Login
                     </Link>
                     <Link
                         href="/signup"
-                        className="block px-4 py-2 bg-blue-500 text-gray-900 rounded hover:bg-blue-600 transition duration-300"
+                        className="block px-4 py-2 mt-2 bg-gradient-to-r from-purple-600 to-indigo-500 text-white text-center rounded hover:from-purple-700 hover:to-indigo-600 transition duration-300"
                     >
                         Sign Up
                     </Link>

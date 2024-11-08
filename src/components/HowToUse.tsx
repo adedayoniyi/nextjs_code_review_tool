@@ -1,4 +1,6 @@
-// components/HowToUse.tsx
+
+
+// src/components/HowToUse.tsx
 import React from 'react';
 import Image from 'next/image';
 
