@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 
-export default function VerifyOTP() {
+function VerifyOTP() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -58,5 +58,14 @@ export default function VerifyOTP() {
                 </button>
             </form>
         </section>
+    );
+}
+
+
+export default function Generated() {
+    return (
+        <Suspense>
+            <VerifyOTP />
+        </Suspense>
     );
 }

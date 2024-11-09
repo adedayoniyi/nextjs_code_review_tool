@@ -4,7 +4,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-export default function Register() {
+export default function SignUp() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
@@ -51,7 +51,7 @@ export default function Register() {
                 className="p-6 w-full max-w-md flex flex-col items-center gap-4 bg-gray-800 rounded shadow-lg"
             >
                 {error && <div className="text-red-500">{error}</div>}
-                <h1 className="text-3xl font-bold text-white">Register</h1>
+                <h1 className="text-3xl font-bold text-white">Sign Up</h1>
 
                 <input
                     type="text"
@@ -97,7 +97,7 @@ export default function Register() {
                     type="submit"
                     className="w-full h-12 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
                 >
-                    Register
+                    Sign Up
                 </button>
 
                 <p className="text-gray-400">

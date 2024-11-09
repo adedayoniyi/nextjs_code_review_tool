@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import "./globals.css";
+import { Provider } from "./provider";
 // import { Toaster } from "@/components/ui/toaster";
 
 const fredoka = Lexend({ weight: "400", subsets: ["latin"] });
@@ -17,9 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={fredoka.className}>
-        <main> {children}</main>
-      </body>
+      <Provider>
+
+        <body className={fredoka.className}>
+          <main> {children}</main>
+        </body>
+      </Provider>
     </html>
   );
 }
