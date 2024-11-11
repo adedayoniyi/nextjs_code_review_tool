@@ -1,33 +1,38 @@
-"use client";
+// src/app/signup/page.tsx
 
-import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import axios from "axios";
+'use client';
+
+import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useAuthStore } from '@/lib/user_store';
 
 export default function SignUp() {
     const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false); // Loading state
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
+    const { setEmail } = useAuthStore();
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(null);
-        setIsLoading(true); // Start loading
+        setIsLoading(true);
+
         const formData = new FormData(event.currentTarget);
-        const fullName = formData.get("fullName") as string;
-        const developerRole = formData.get("developerRole") as string;
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-        const confirmPassword = formData.get("confirmPassword") as string;
+        const fullName = formData.get('fullName') as string;
+        const developerRole = formData.get('developerRole') as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+        const confirmPassword = formData.get('confirmPassword') as string;
 
         if (password !== confirmPassword) {
-            setError("Passwords do not match");
-            setIsLoading(false); // Stop loading
+            setError('Passwords do not match');
+            setIsLoading(false);
             return;
         }
 
         try {
-            const res = await axios.post("/api/auth/register", {
+            const res = await axios.post('/api/auth/register', {
                 fullName,
                 developerRole,
                 email,
@@ -35,16 +40,16 @@ export default function SignUp() {
             });
 
             if (res.data.success) {
-                // Redirect to OTP verification page
-                router.push("/verify-otp?email=" + encodeURIComponent(email));
+                setEmail(email); // Store email in Zustand
+                router.push('/verify-otp');
             } else {
                 setError(res.data.error);
             }
         } catch (err) {
-            // setError(err?.response.data?.error || "An error occurred");
-            setError("An error occurred");
+            //   setError(err.response?.data?.error || 'An error occurred');
+            setError("An error has occired")
         } finally {
-            setIsLoading(false); // Stop loading in both success and error
+            setIsLoading(false);
         }
     };
 
@@ -99,7 +104,7 @@ export default function SignUp() {
 
                 <button
                     type="submit"
-                    disabled={isLoading} // Disable button when loading
+                    disabled={isLoading}
                     className={`w-full h-12 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition flex items-center justify-center ${isLoading ? "cursor-not-allowed opacity-50" : ""
                         }`}
                 >

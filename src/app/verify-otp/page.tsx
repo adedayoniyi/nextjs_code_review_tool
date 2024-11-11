@@ -1,33 +1,42 @@
-"use client";
+// src/app/verify-otp/page.tsx
 
-import { useState, FormEvent, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
+'use client';
+
+import { useState, FormEvent, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useAuthStore } from '@/lib/user_store';
 
 function VerifyOTP() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const email = searchParams.get("email") || "";
+    const { email, clearEmail } = useAuthStore();
+
+    useEffect(() => {
+        if (!email) {
+            // If email is not in the store, redirect to signup
+            router.push('/signup');
+        }
+    }, [email, router]);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(null);
         const formData = new FormData(event.currentTarget);
-        const otp = formData.get("otp") as string;
+        const otp = formData.get('otp') as string;
 
         try {
-            const res = await axios.post("/api/auth/verify-otp", { email, otp });
+            const res = await axios.post('/api/auth/verify-otp', { email, otp });
 
             if (res.data.success) {
-                // Redirect to login page
-                router.push("/login");
+                clearEmail(); // Clear email from store
+                router.push('/login');
             } else {
                 setError(res.data.error);
             }
         } catch (err) {
-            //   setError(err.response?.data?.error || "An error occurred");
-            setError("An error occurred");
+            //   setError(err.response?.data?.error || 'An error occurred');
+            setError('An error occurred');
 
         }
     };
