@@ -26,7 +26,7 @@ export default function Login() {
             setError(res.error);
         }
         if (res?.ok) {
-            router.push("/dashboard");
+            router.push("/explore");
         }
     };
 

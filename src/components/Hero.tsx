@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaRocket, FaCheckCircle, FaUsers } from 'react-icons/fa';
 import { FiArrowRight } from 'react-icons/fi';
+import Link from 'next/link';
 
 const Hero: React.FC = () => {
   return (
@@ -47,17 +48,18 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Call to Action */}
-          <motion.button
-            className="mt-10 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-full shadow-lg hover:from-indigo-600 hover:to-purple-700 transition duration-300 font-semibold text-xl mx-auto flex items-center space-x-3"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              // Handle button click, e.g., navigate to signup
-            }}
-          >
-            <span>Get Started</span>
-            <FiArrowRight className="h-6 w-6" />
-          </motion.button>
+          <Link href={'/signup'}>
+            <motion.button
+              className="mt-10 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-full shadow-lg hover:from-indigo-600 hover:to-purple-700 transition duration-300 font-semibold text-xl mx-auto flex items-center space-x-3"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+
+              }}
+            >
+              <span>Get Started</span>
+              <FiArrowRight className="h-6 w-6" />
+            </motion.button></Link>
         </motion.div>
 
         {/* Image Content */}
