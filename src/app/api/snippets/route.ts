@@ -20,7 +20,7 @@ export async function GET() {
             description: snippet.description,
             author: {
                 name: snippet.author.fullName,
-                avatar: null, // Adjust if you have avatars
+                avatar: null,
             },
         }));
 

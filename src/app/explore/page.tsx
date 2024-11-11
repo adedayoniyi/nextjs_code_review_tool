@@ -1,99 +1,75 @@
-"use client";
+'use client'
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { FaBell, FaCog } from "react-icons/fa";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-
-const Navbar: React.FC = () => {
-    const { data: session } = useSession();
-
-    return (
-        <nav className="bg-gray-900 px-4 py-3 flex justify-between items-center">
-            <Link href="/" className="text-white text-2xl font-bold">
-                CodeReviewTool
-            </Link>
-
-            <div className="flex items-center space-x-4">
-                <button className="text-gray-400 hover:text-white">
-                    <FaBell size={20} />
-                </button>
-                <button className="text-gray-400 hover:text-white">
-                    <FaCog size={20} />
-                </button>
-                <Link href="/profile">
-                    {session?.user?.image ? (
-                        <Image
-                            src={session.user.image}
-                            alt="Profile"
-                            width={32}
-                            height={32}
-                            className="rounded-full"
-                        />
-                    ) : (
-                        <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-white">
-                            {session?.user?.name?.charAt(0).toUpperCase() || "U"}
-                        </div>
-                    )}
-                </Link>
-            </div>
-        </nav>
-    );
-};
-
-
-
-
-import { FaPlus } from "react-icons/fa";
-import axios from "axios";
-import CodeSnippet from "./code_snipprt";
+import React, { useEffect, useState } from "react"
+import Link from "next/link"
+import { FaPlus } from "react-icons/fa"
+import axios from "axios"
+import CodeSnippet from "./code_snipprt"
+import ExploreNavBar from "@/components/ExploreNavbar"
 
 interface Snippet {
-    id: string;
-    code: string;
-    language: string;
-    title: string;
-    description: string;
+    id: string
+    code: string
+    language: string
+    title: string
+    description: string
     author: {
-        id: string;
-        name: string;
-        avatar?: string;
-    };
+        id: string
+        name: string
+        avatar?: string
+    }
 }
 
-const ExplorePage: React.FC = () => {
-    const [snippets, setSnippets] = useState<Snippet[]>([]);
+export default function ExplorePage() {
+    const [snippets, setSnippets] = useState<Snippet[]>([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        // Fetch code snippets from the API
         const fetchSnippets = async () => {
             try {
-                const response = await axios.get("/api/snippets");
-                setSnippets(response.data);
+                const response = await axios.get("/api/snippets")
+                setSnippets(response.data)
             } catch (error) {
-                console.error("Error fetching snippets:", error);
+                console.error("Error fetching snippets:", error)
+            } finally {
+                setIsLoading(false)
             }
-        };
+        }
 
-        fetchSnippets();
-    }, []);
+        fetchSnippets()
+    }, [])
 
     return (
         <div className="bg-gray-900 min-h-screen text-white">
-            <Navbar />
+            <ExploreNavBar />
             <div className="container mx-auto px-4 py-6">
-                {snippets.map((snippet) => (
-                    <CodeSnippet
-                        key={snippet.id}
-                        id={snippet.id}
-                        code={snippet.code}
-                        language={snippet.language}
-                        title={snippet.title}
-                        description={snippet.description}
-                        author={snippet.author}
-                    />
-                ))}
+                {isLoading ? (
+                    // Skeleton loader
+                    Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="bg-gray-800 rounded-lg p-6 mb-6 animate-pulse">
+                            <div className="h-6 bg-gray-700 rounded w-3/4 mb-4"></div>
+                            <div className="h-4 bg-gray-700 rounded w-1/2 mb-2"></div>
+                            <div className="h-4 bg-gray-700 rounded w-1/4 mb-4"></div>
+                            <div className="h-32 bg-gray-700 rounded mb-4"></div>
+                            <div className="flex items-center space-x-2">
+                                <div className="rounded-full bg-gray-700 h-8 w-8"></div>
+                                <div className="h-4 bg-gray-700 rounded w-1/4"></div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    snippets.map((snippet) => (
+                        <CodeSnippet
+                            key={snippet.id}
+                            id={snippet.id}
+                            code={snippet.code}
+                            language={snippet.language}
+                            title={snippet.title}
+                            description={snippet.description}
+                            author={snippet.author}
+                        />
+                    ))
+                )}
             </div>
 
             {/* Floating Action Button */}
@@ -106,7 +82,5 @@ const ExplorePage: React.FC = () => {
                 </button>
             </Link>
         </div>
-    );
-};
-
-export default ExplorePage;
+    )
+}
