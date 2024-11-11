@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState, FormEvent, useEffect, Suspense } from 'react';
+import { useState, FormEvent, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useAuthStore } from '@/lib/user_store';
@@ -12,12 +12,12 @@ function VerifyOTP() {
     const router = useRouter();
     const { email, clearEmail } = useAuthStore();
 
-    useEffect(() => {
-        if (!email) {
-            // If email is not in the store, redirect to signup
-            router.push('/signup');
-        }
-    }, [email, router]);
+    // useEffect(() => {
+    //     if (!email) {
+    //         // If email is not in the store, redirect to signup
+    //         router.push('/signup');
+    //     }
+    // }, [email, router]);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
