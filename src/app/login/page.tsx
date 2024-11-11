@@ -35,7 +35,7 @@ export default function Login() {
         } catch (err) {
             setError("An error occurred during login");
         } finally {
-            setIsLoading(false); // Stop loading in both success and error
+            setIsLoading(false);
         }
     };
 
