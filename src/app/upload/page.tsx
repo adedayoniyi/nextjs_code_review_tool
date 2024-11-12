@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import ExploreNavBar from "@/components/ExploreNavbar";
+import Editor from "@monaco-editor/react"; // Importing Monaco Editor
 
 const languageOptions = [
     { value: "javascript", label: "JavaScript" },
@@ -23,6 +24,8 @@ const UploadPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
+    const [code, setCode] = useState<string>(""); // State to hold code input
+    const [language, setLanguage] = useState<string>("javascript"); // Default language
 
     // Redirect unauthenticated users to login page
     if (status === "unauthenticated") {
@@ -37,8 +40,8 @@ const UploadPage: React.FC = () => {
 
         const formData = new FormData(event.currentTarget);
         const title = formData.get("title") as string;
-        const code = formData.get("code") as string;
-        const language = formData.get("language") as string;
+        // const code = formData.get("code") as string; // Removed, using state instead
+        // const language = formData.get("language") as string; // Removed, using state instead
         const description = formData.get("description") as string;
 
         if (!title || !code || !language) {
@@ -62,11 +65,19 @@ const UploadPage: React.FC = () => {
                 setError(res.data.error);
             }
         } catch (err) {
-            //   setError(err.response?.data?.error || "An error occurred");
-            setError("An error occurred")
+            // setError(err.response?.data?.error || "An error occurred");
+            setError("An error occurred");
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleEditorChange = (value: string | undefined) => {
+        setCode(value || "");
+    };
+
+    const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setLanguage(e.target.value);
     };
 
     return (
@@ -89,6 +100,8 @@ const UploadPage: React.FC = () => {
                         <label className="block text-lg font-medium mb-2">Language *</label>
                         <select
                             name="language"
+                            value={language}
+                            onChange={handleLanguageChange}
                             required
                             className="w-full p-3 bg-gray-800 rounded border border-gray-700 focus:outline-none"
                         >
@@ -102,12 +115,22 @@ const UploadPage: React.FC = () => {
                     </div>
                     <div>
                         <label className="block text-lg font-medium mb-2">Code *</label>
-                        <textarea
-                            name="code"
-                            rows={10}
-                            required
-                            className="w-full p-3 bg-gray-800 rounded border border-gray-700 focus:outline-none font-mono"
-                        ></textarea>
+                        <div className="bg-gray-800 rounded border border-gray-700">
+                            <Editor
+                                height="300px"
+                                defaultLanguage={language}
+                                language={language}
+                                value={code}
+                                theme="vs-dark"
+                                onChange={handleEditorChange}
+                                options={{
+                                    automaticLayout: true,
+                                    minimap: { enabled: false },
+                                    fontSize: 14,
+                                    scrollBeyondLastLine: false,
+                                }}
+                            />
+                        </div>
                     </div>
                     <div>
                         <label className="block text-lg font-medium mb-2">Description (Optional)</label>
