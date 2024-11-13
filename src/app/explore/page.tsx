@@ -1,43 +1,46 @@
-'use client'
+// app/explore/page.tsx
 
-import React, { useEffect, useState } from "react"
-import Link from "next/link"
-import { FaPlus } from "react-icons/fa"
-import axios from "axios"
-import CodeSnippet from "./code_snipprt"
-import ExploreNavBar from "@/components/ExploreNavbar"
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { FaPlus } from "react-icons/fa";
+import axios from "axios";
+import ExploreNavBar from "@/components/ExploreNavbar";
+import CodeSnippet from "./code_snippet";
 
 interface Snippet {
-    id: string
-    code: string
-    language: string
-    title: string
-    description: string
+    id: string;
+    code: string;
+    language: string;
+    title: string;
+    description?: string;
+    likes: string[]; // Array of user IDs who liked the snippet
     author: {
-        id: string
-        name: string
-        avatar?: string
-    }
+        id: string;
+        name: string;
+        avatar?: string;
+    };
 }
 
 export default function ExplorePage() {
-    const [snippets, setSnippets] = useState<Snippet[]>([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [snippets, setSnippets] = useState<Snippet[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchSnippets = async () => {
             try {
-                const response = await axios.get("/api/snippets")
-                setSnippets(response.data)
+                const response = await axios.get("/api/snippets");
+                setSnippets(response.data);
             } catch (error) {
-                console.error("Error fetching snippets:", error)
+                console.error("Error fetching snippets:", error);
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
-        }
+        };
 
-        fetchSnippets()
-    }, [])
+        fetchSnippets();
+    }, []);
 
     return (
         <div className="bg-gray-900 min-h-screen text-white">
@@ -46,7 +49,10 @@ export default function ExplorePage() {
                 {isLoading ? (
                     // Skeleton loader
                     Array.from({ length: 3 }).map((_, index) => (
-                        <div key={index} className="bg-gray-800 rounded-lg p-6 mb-6 animate-pulse">
+                        <div
+                            key={index}
+                            className="bg-gray-800 rounded-lg p-6 mb-6 animate-pulse"
+                        >
                             <div className="h-6 bg-gray-700 rounded w-3/4 mb-4"></div>
                             <div className="h-4 bg-gray-700 rounded w-1/2 mb-2"></div>
                             <div className="h-4 bg-gray-700 rounded w-1/4 mb-4"></div>
@@ -67,6 +73,7 @@ export default function ExplorePage() {
                             title={snippet.title}
                             description={snippet.description}
                             author={snippet.author}
+                            likes={snippet.likes}
                         />
                     ))
                 )}
@@ -82,5 +89,5 @@ export default function ExplorePage() {
                 </button>
             </Link>
         </div>
-    )
+    );
 }

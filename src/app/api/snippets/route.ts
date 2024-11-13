@@ -1,8 +1,11 @@
+// src/app/api/snippets/route.ts
+
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import CodeSnippet from "@/models/CodeSnippet";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { ObjectId } from "mongoose";
 
 export async function GET() {
     await connectDB();
@@ -18,6 +21,7 @@ export async function GET() {
             language: snippet.language,
             title: snippet.title,
             description: snippet.description,
+            likes: (snippet.likes || []).map((likeId: ObjectId) => likeId.toString()),
             author: {
                 name: snippet.author.fullName,
                 avatar: null,
@@ -33,6 +37,7 @@ export async function GET() {
         );
     }
 }
+
 
 export async function POST(request: Request) {
     await connectDB();

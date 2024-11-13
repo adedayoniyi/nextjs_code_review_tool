@@ -1,3 +1,6 @@
+// src/models/CodeSnippet.ts
+
+
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface CodeSnippetDocument extends Document {
@@ -6,8 +9,9 @@ export interface CodeSnippetDocument extends Document {
     language: string;
     description?: string;
     author: mongoose.Types.ObjectId;
-    comments: mongoose.Types.ObjectId[]; // References to Comment documents
-    suggestions: mongoose.Types.ObjectId[]; // References to Suggestion documents
+    comments: mongoose.Types.ObjectId[]; // Reference to Comment documents
+    suggestions: mongoose.Types.ObjectId[]; // Reference to Suggestion documents
+    likes: mongoose.Types.ObjectId[]; // Reference to User documents who liked the snippet
     createdAt: Date;
     updatedAt: Date;
 }
@@ -36,6 +40,7 @@ const CodeSnippetSchema = new Schema<CodeSnippetDocument>(
         },
         comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
         suggestions: [{ type: Schema.Types.ObjectId, ref: "Suggestion" }],
+        likes: { type: [{ type: Schema.Types.ObjectId, ref: "User" }], default: [] }, // Added default value
     },
     {
         timestamps: true,

@@ -7,6 +7,32 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useAuthStore } from '@/lib/user_store';
 
+// Define the available developer roles
+const DEVELOPER_ROLES = [
+    { value: '', label: 'Select Role' },
+    { value: 'frontend', label: 'Frontend Developer' },
+    { value: 'backend', label: 'Backend Developer' },
+    { value: 'fullstack', label: 'Full Stack Developer' },
+    { value: 'devops', label: 'DevOps Engineer' },
+    { value: 'mobile', label: 'Mobile Developer' },
+    { value: 'data_scientist', label: 'Data Scientist' },
+    { value: 'machine_learning', label: 'Machine Learning Engineer' },
+    { value: 'security', label: 'Security Engineer' },
+    { value: 'ui_ux', label: 'UI/UX Designer' },
+    { value: 'qa', label: 'Quality Assurance Engineer' },
+    { value: 'game_dev', label: 'Game Developer' },
+    { value: 'cloud', label: 'Cloud Engineer' },
+    { value: 'embedded', label: 'Embedded Systems Developer' },
+    { value: 'blockchain', label: 'Blockchain Developer' },
+    { value: 'iot', label: 'IoT Developer' },
+    { value: 'database', label: 'Database Administrator' },
+    { value: 'system_architect', label: 'System Architect' },
+    { value: 'technical_writer', label: 'Technical Writer' },
+    // Add more roles as needed
+];
+
+
+
 export default function SignUp() {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,6 +57,12 @@ export default function SignUp() {
             return;
         }
 
+        if (!developerRole) {
+            setError('Please select a developer role');
+            setIsLoading(false);
+            return;
+        }
+
         try {
             const res = await axios.post('/api/auth/register', {
                 fullName,
@@ -46,8 +78,9 @@ export default function SignUp() {
                 setError(res.data.error);
             }
         } catch (err) {
-            //   setError(err.response?.data?.error || 'An error occurred');
-            setError("An error has occired")
+            // You can uncomment the next line for more detailed error messages
+            // setError(err.response?.data?.error || 'An error occurred');
+            setError("An error has occurred");
         } finally {
             setIsLoading(false);
         }
@@ -70,13 +103,18 @@ export default function SignUp() {
                     className="w-full h-12 px-4 bg-gray-700 text-white rounded focus:outline-none"
                 />
 
-                <input
-                    type="text"
+                {/* Developer Role Dropdown */}
+                <select
                     name="developerRole"
-                    placeholder="Developer Role"
                     required
-                    className="w-full h-12 px-4 bg-gray-700 text-white rounded focus:outline-none"
-                />
+                    className="w-full h-12 px-4 bg-gray-700 text-white rounded focus:outline-none appearance-none"
+                >
+                    {DEVELOPER_ROLES.map((role) => (
+                        <option key={role.value} value={role.value}>
+                            {role.label}
+                        </option>
+                    ))}
+                </select>
 
                 <input
                     type="email"

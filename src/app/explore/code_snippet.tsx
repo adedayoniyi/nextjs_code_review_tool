@@ -43,6 +43,7 @@ interface CodeSnippetProps {
         name: string;
         avatar?: string;
     };
+    likes: string[]; // Array of user IDs who liked the snippet
 }
 
 const CodeSnippet: React.FC<CodeSnippetProps> = ({
@@ -52,9 +53,13 @@ const CodeSnippet: React.FC<CodeSnippetProps> = ({
     title,
     description,
     author,
+    likes: initialLikes,
 }) => {
     const [comments, setComments] = useState<Comment[]>([]);
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+    //   const [likes, setLikes] = useState<string[]>(initialLikes || []);
+    const [hasLiked, setHasLiked] = useState<boolean>(false);
+
     const [selectedLine, setSelectedLine] = useState<number | null>(null);
     const [commentContent, setCommentContent] = useState("");
     const [showSuggestionModal, setShowSuggestionModal] = useState(false);
@@ -82,7 +87,12 @@ const CodeSnippet: React.FC<CodeSnippetProps> = ({
         };
 
         fetchData();
-    }, [id]);
+
+        // Check if the current user has liked the snippet
+        if (session && initialLikes) {
+            setHasLiked(initialLikes.includes(session.user.id));
+        }
+    }, [id, session, initialLikes]);
 
     const handleLineClick = (lineNumber: number) => {
         if (!session) {
@@ -185,6 +195,28 @@ const CodeSnippet: React.FC<CodeSnippetProps> = ({
             console.error("Error adding comment:", error);
         }
     };
+
+    const handleLike = async () => {
+        if (!session) {
+            alert("Please login to like the snippet.");
+            return;
+        }
+
+        try {
+            const res = await axios.post(`/api/snippets/${id}/like`);
+
+            if (res.data.success) {
+                setHasLiked(res.data.hasLiked);
+                setLikesCount(res.data.likesCount);
+            } else {
+                alert(res.data.error || "Failed to process like action");
+            }
+        } catch (error) {
+            console.error("Error processing like action:", error);
+        }
+    };
+
+    const [likesCount, setLikesCount] = useState<number>(initialLikes?.length || 0);
 
     // Create a map of line numbers to comments for quick access
     const commentsMap: { [key: number]: Comment[] } = comments.reduce(
@@ -343,8 +375,12 @@ const CodeSnippet: React.FC<CodeSnippetProps> = ({
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center mt-4 space-x-4 space-y-2 sm:space-y-0">
-                <button className="text-gray-400 hover:text-white flex items-center">
-                    <FaThumbsUp className="mr-1" /> Like
+                <button
+                    className={`flex items-center ${hasLiked ? "text-indigo-500" : "text-gray-400 hover:text-white"}`}
+                    onClick={handleLike}
+                >
+                    <FaThumbsUp className="mr-1" />
+                    {likesCount} {likesCount === 1 ? "Like" : "Likes"}
                 </button>
                 <button
                     className="text-gray-400 hover:text-white flex items-center"
@@ -474,29 +510,24 @@ const CodeSnippet: React.FC<CodeSnippetProps> = ({
                                                         <div key={index} className="h-6 flex items-center">
                                                             <button
                                                                 onClick={() =>
-                                                                    setCommentModalSelectedLine(
-                                                                        lineNumber
-                                                                    )
+                                                                    setCommentModalSelectedLine(lineNumber)
                                                                 }
-                                                                className={`flex items-center justify-end w-8 sm:w-10 text-xs cursor-pointer ${commentModalSelectedLine ===
-                                                                        lineNumber
+                                                                className={`flex items-center justify-end w-8 sm:w-10 text-xs cursor-pointer ${commentModalSelectedLine === lineNumber
                                                                         ? "text-indigo-500"
                                                                         : "text-gray-500 hover:bg-gray-700"
                                                                     }`}
                                                                 title={
-                                                                    commentModalSelectedLine ===
-                                                                        lineNumber
+                                                                    commentModalSelectedLine === lineNumber
                                                                         ? `Selected line ${lineNumber}`
                                                                         : `Select line ${lineNumber} to comment`
                                                                 }
                                                             >
                                                                 <span className="mr-1">{lineNumber}</span>
-                                                                {commentModalSelectedLine ===
-                                                                    lineNumber && (
-                                                                        <span className="text-indigo-500">
-                                                                            &#10003;
-                                                                        </span>
-                                                                    )}
+                                                                {commentModalSelectedLine === lineNumber && (
+                                                                    <span className="text-indigo-500">
+                                                                        &#10003;
+                                                                    </span>
+                                                                )}
                                                             </button>
                                                         </div>
                                                     );
