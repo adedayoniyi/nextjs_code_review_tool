@@ -99,6 +99,12 @@ NEXTAUTH_SECRET=your_nextauth_secret
 
 # NextAuth.js Provider (e.g., GitHub)
 NEXTAUTH_URL=http://localhost:3000
+
+# Email Address
+EMAIL_USER=email address
+
+# Email Password with 2 factor auth integrated
+EMAIL_PASS= Less Secure App Email Password
 ```
 
 **Note**: Replace `your_mongodb_connection_string` and `your_nextauth_secret` with your actual MongoDB URI and a secure secret key, respectively.
