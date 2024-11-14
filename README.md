@@ -107,7 +107,7 @@ EMAIL_USER=email address
 EMAIL_PASS= Less Secure App Email Password
 ```
 
-**Note**: Replace `your_mongodb_connection_string` and `your_nextauth_secret` with your actual MongoDB URI and a secure secret key, respectively.
+**Note**: Replace `your_mongodb_connection_string`, `your_nextauth_secret`, `email address` and `Less Secure App Email Password` with your actual MongoDB URI, a secure secret key, email address and app email passsword respectively.
 
 ### Running the Application
 
