@@ -14,7 +14,7 @@ const steps: Step[] = [
     {
         title: 'Upload Your Code',
         description: 'Easily upload your code snippets in various programming languages.',
-        image: '/upload_illustration.png',
+        image: '/upload_showcase.png',
     },
     {
         title: 'Collaborate with Team',
