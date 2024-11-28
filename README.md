@@ -1,6 +1,6 @@
 # Code Review Tool
 
-![Hero Illustration](./public/hero-illustration.png)
+![Hero Illustration](https://res.cloudinary.com/dq60qoglh/image/upload/v1731575575/wxx9vo4cduhezab2uc10.png)
 
 ## Table of Contents
 
@@ -26,7 +26,8 @@
 
 Welcome to the **Code Review Tool**, a comprehensive platform built with Next.js that allows developers to share, comment, and suggest changes to code snippets. This tool facilitates collaborative code reviews, enabling users to enhance code quality through constructive feedback and peer suggestions.
 
-![Upload Illustration](./public/upload_illustration.png)
+![Upload Illustration](https://res.cloudinary.com/dq60qoglh/image/upload/v1731575575/ww2j5rpdn56sl8c8og5v.png)
+
 
 ## Features
 
@@ -43,15 +44,15 @@ Welcome to the **Code Review Tool**, a comprehensive platform built with Next.js
 
 ### Uploading a Code Snippet
 
-![Upload Illustration](./public/upload_illustration.png)
+![Upload Illustration](https://res.cloudinary.com/dq60qoglh/image/upload/v1731575575/ww2j5rpdn56sl8c8og5v.png)
 
 ### Suggesting Changes
 
-![Suggestion Illustration](./public/suggestion_illustration.png)
+![Suggestion Illustration](https://res.cloudinary.com/dq60qoglh/image/upload/v1731575575/wxx9vo4cduhezab2uc10.png)
 
 ### Commenting on Code
 
-![Comment Illustration](./public/comment_illustration.png)
+![Comment Illustration](https://res.cloudinary.com/dq60qoglh/image/upload/v1731575573/uso24ue9uq0jsdycx9ng.png)
 
 ## Getting Started
 
@@ -410,6 +411,6 @@ Please ensure your code follows the project's coding standards and includes rele
 
 ## License
 
-This project is licensed under the [Apache License 2.0](./LICENSE).
+This project is licensed under the [Apache License 2.0](https://github.com/adedayoniyi/nextjs_code_review_tool/blob/main/LICENSE.md).
 
 ---
